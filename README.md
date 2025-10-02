@@ -1,2 +1,2 @@
-# AI-Club-Project-Fall-2025
+# AI-Club-Project
 Exactly as the name says
