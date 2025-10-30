@@ -11,7 +11,7 @@ penalty (L2 vs elastic‑net), early_stopping, and class_weight using stratified
 """
 
 # set plot style
-plt.style.use('ggplot')
+plt.style.use("ggplot")
 
 def main(): 
     dataset = load_breast_cancer()
@@ -21,26 +21,31 @@ def main():
     y = dataset.target 
   
     #Defining Splits for Test/Train & Stratified data
-    from sklearn.model_selection import StratifiedShuffleSplit
-    X_train, X_test, y_train, y_test = StratifiedShuffleSplit(X, y, n_splits=5, test_size=0.4, random_state=1, shuffle=True)
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=1, shuffle=True, stratify=y)
 
     #Model - Stochastic Gradient Descent Classifier
+    from sklearn.svm import SVC
     from sklearn.linear_model import SGDClassifier
     from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import StandardScaler
     from sklearn.decomposition import PCA
     from sklearn.model_selection import GridSearchCV
     from sklearn.metrics import classification_report, roc_auc_score
-    pipe = Pipeline([
-        ('scaler', StandardScaler()),
-        ('pca', PCA()),
-        ('sgd', SGDClassifier(random_state=1))
-    ])
 
-    clf = pipe(loss = "hinge", penalty = "l2", max_iter = 5)
-    clf.fit(X_train, y_train)
-
-
+    #Constructing Pipelin with scaler and svc
+    pipe = Pipeline([('scaler', StandardScaler()), ('sgd', SGDClassifier())])
+    #Setting Parameters for model fitting
+    pipe.set_params(
+        sgd__loss="log_loss", 
+        sgd__penalty="l2", 
+        sgd__early_stopping=True, 
+        sgd__validation_fraction=0.1, 
+        sgd__n_iter_no_change=5)
+    
+    #Fitting Model and Scoring
+    pipe.fit(X_train, y_train)
+    print(("Test accuracy: (SGD)"), pipe.score(X_test, y_test), "%")
 
 def basedatainfo():
     dataset = load_breast_cancer()
@@ -102,4 +107,3 @@ def graphing_datasets():
     
 if __name__ == "__main__":
     main()
-    graphing_datasets()
