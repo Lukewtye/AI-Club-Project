@@ -6,8 +6,7 @@ from sklearn.datasets import load_breast_cancer
 import seaborn as sns
 
 """
-Build a pipeline: scaling → (optional PCA) → SGDClassifier; grid‑search alpha, loss (log vs hinge), 
-penalty (L2 vs elastic‑net), early_stopping, and class_weight using stratified CV and ROC‑AUC as the primary score. 
+pip install -r requirements.txt to install dependencies, use version > 3.13 of python
 """
 
 # set plot style
