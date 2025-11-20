@@ -6,7 +6,7 @@ from sklearn.datasets import load_breast_cancer
 import seaborn as sns
 
 """
-pip install -r requirements.txt to install dependencies, use version > 3.13 of python
+pip install -r requirements.txt to install dependencies, use version < 3.13 of python and a venv
 """
 
 # set plot style
